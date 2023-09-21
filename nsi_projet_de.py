@@ -4,93 +4,89 @@ import itertools as tool
 import time as ti
 import math as m
 
-tu.Screen().tracer(0) 
 tu.hideturtle()
-tu.up()
 tu.Screen().setup(1920,1080)
 
-class Dices():
+object_list = []
 
-	def __init__(self, end_coord):
-		self.end_coord = end_coord
+class Dices(tu.Turtle):
 
-	def draw_circle(self, circle_center_position_x, circle_center_position_y, radius):
-		tu.goto(circle_center_position_x, circle_center_position_y-radius)
-		tu.begin_fill()
-		tu.seth(0)
-		tu.circle(radius)
-		tu.end_fill()
+	tu.Screen().tracer(0)
 
-	def first_point(self, dice_corner_position_x, dice_corner_position_y, rotation):
-			tu.up()
-			tu.goto(dice_corner_position_x, dice_corner_position_y)
-			tu.seth(rotation+45)
-			tu.forward(20*m.sqrt(2))
-	
-	def forward_point(y):
-		for i in range(y-1):
-			tu.forward(80)
-			tu.seth(tu.heading+90)
+	def __init__(self, rolled_number, end_coord_x, end_coord_y):
+		super().__init__(visible= False)  
+		self.rolled_number = rolled_number
+		self.end_coord_x = end_coord_x
+		self.end_coord_y = end_coord_y
 
-	def draw_dice(self, dice_corner_position_x,dice_corner_position_y,size, rotation, number_rolled,y):
-		tu.up()
-		tu.goto(dice_corner_position_x, dice_corner_position_y)
-		tu.down()
+	def draw_circle(self, circle_center_position_x, circle_center_position_y, diameter):
+		self.goto(circle_center_position_x, circle_center_position_y)
+		self.dot(diameter, 'black')
+
+	def first_point(self, dice_corner_position_x, dice_corner_position_y, rotation, y):
+		self.up()
+		self.goto(dice_corner_position_x, dice_corner_position_y)
+		for i in range(y):
+			self.seth(rotation+i*90)
+			self.forward(120)
+		self.seth(rotation+y*90+45)
+		self.forward(20*m.sqrt(2))
+
+	def draw_dice(self, dice_corner_position_x,dice_corner_position_y,size, rotation,y):
+		self.up()
+		self.goto(dice_corner_position_x, dice_corner_position_y)
+		self.down()
+		self.clear()
 		for i in range(4):
-			tu.down()
-			tu.seth(90*i+rotation)
-			tu.forward(size)
-			tu.up()
-		if number_rolled in [1,3,5]:
-			tu.seth(rotation+45)
-			tu.forward(60*m.sqrt(2))
-			self.draw_circle(tu.xcor(), tu.ycor(), 15)
-		if number_rolled >= 2:
-			self.first_point(dice_corner_position_x, dice_corner_position_y, rotation)
-			tu.seth(rotation)
-			tu.forward(80)
-			self.draw_circle(tu.xcor(), tu.ycor(), 15)
-			self.first_point(dice_corner_position_x, dice_corner_position_y, rotation)
-			tu.seth(rotation+90)
-			tu.forward(80)
-			self.draw_circle(tu.xcor(), tu.ycor(), 15)
-		if number_rolled >= 4:
-			self.first_point(dice_corner_position_x, dice_corner_position_y, rotation)
-			self.draw_circle(tu.xcor(), tu.ycor(), 15)
-			self.first_point(dice_corner_position_x, dice_corner_position_y, rotation)
-			tu.seth(rotation+45)
-			tu.forward(80*m.sqrt(2))
-			self.draw_circle(tu.xcor(), tu.ycor(), 15)
-		if number_rolled >= 6:
-			self.first_point(dice_corner_position_x, dice_corner_position_y, rotation)
-			tu.seth(rotation)
-			tu.forward(40)
-			self.draw_circle(tu.xcor(), tu.ycor(), 15)
-			self.first_point(dice_corner_position_x, dice_corner_position_y, rotation)
-			tu.seth(rotation)
-			tu.forward(40)
-			tu.seth(rotation+90)
-			tu.forward(80)
-			self.draw_circle(tu.xcor(), tu.ycor(), 15)
-
-def generate_dice():
-	d1 = Dices((0,0))
-	for i in range(1080):
-		tu.clear()
-		d1.draw_dice(-840, 540-i, 120, 90, number_rolled)
+			self.down()
+			self.seth(90*i+rotation)
+			self.forward(size)
+			self.up()
+		if self.rolled_number in [1,3,5]:
+			self.seth(rotation+45)
+			self.forward(60*m.sqrt(2))
+			self.draw_circle(self.xcor(), self.ycor(), 30)
+		if self.rolled_number >= 2:
+			self.first_point(dice_corner_position_x, dice_corner_position_y, rotation, y)
+			self.seth(rotation+90*y)
+			self.forward(80)
+			self.draw_circle(self.xcor(), self.ycor(), 30)
+			self.first_point(dice_corner_position_x, dice_corner_position_y, rotation, y)
+			self.seth(rotation+90+90*y)
+			self.forward(80)
+			self.draw_circle(self.xcor(), self.ycor(), 30)
+		if self.rolled_number >= 4:
+			self.first_point(dice_corner_position_x, dice_corner_position_y, rotation, y)
+			self.draw_circle(self.xcor(), self.ycor(), 30)
+			self.first_point(dice_corner_position_x, dice_corner_position_y, rotation, y)
+			self.seth(rotation+45+90*y)
+			self.forward(80*m.sqrt(2))
+			self.draw_circle(self.xcor(), self.ycor(), 30)
+		if self.rolled_number >= 6:
+			self.first_point(dice_corner_position_x, dice_corner_position_y, rotation, y)
+			self.seth(rotation+90*y)
+			self.forward(40)
+			self.draw_circle(self.xcor(), self.ycor(), 30)
+			self.first_point(dice_corner_position_x, dice_corner_position_y, rotation, y)
+			self.seth(rotation+90*y)
+			self.forward(40)
+			self.seth(rotation+90+90*y)
+			self.forward(80)
+			self.draw_circle(self.xcor(), self.ycor(), 30)
 		tu.Screen().update()
-		ti.sleep(0.001)
-	for y,i,teta in tool.product(range(4),range(4),range(91)):
-		tu.clear()
-		d1.draw_dice(-840+i*120, -540, 120, 90-teta, number_rolled,y)
-		ti.sleep(0.005)
+
+def generate_dice(end_coord_x, end_coord_y, dice_value):
+	object_list.append(Dices(1,end_coord_x,end_coord_y))
+	for i in range(540):
+		object_list[dice_value].draw_dice(-840, 540-2*i, 120, 90, 0)
+		tu.Screen().update()
+	for i,y,teta in tool.product(range(4),range(4),range(91)):
+		if -840+(4*i+y)*120 < end_coord_x:
+			object_list[dice_value].draw_dice(-840+(4*i+y)*120, -540, 120, 90-teta, y)
 		tu.Screen().update() 
-for i in range(10):
-	number_rolled = ra.randint(1,6)
-	number_rolled = 6
-	generate_dice()
-d1 = Dices((0,0))
-d1.draw_dice(0, 0, 120, 90, 6)
+
+for y,i in tool.product(range(9), range(16)):
+	generate_dice(960-120*i, y*120, 16*y+i)
 
 tu.Screen().update() 
 ti.sleep(5)
