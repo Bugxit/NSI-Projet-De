@@ -86,7 +86,7 @@ def generate_dice(end_coord_x, end_coord_y, dice_value):
 		tu.Screen().update() 
 
 for y,i in tool.product(range(9), range(16)):
-	generate_dice(960-120*i, y*120-540, 2*y+i)
+	generate_dice(960-120*i, y*120-540, 16*y+i)
 
 tu.Screen().update() 
 ti.sleep(5)
