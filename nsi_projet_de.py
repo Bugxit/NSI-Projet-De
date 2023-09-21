@@ -14,7 +14,7 @@ class Dices(tu.Turtle):
 	tu.Screen().tracer(0)
 
 	def __init__(self, rolled_number, end_coord_x, end_coord_y):
-		super().__init__(visible= False)  
+		super().__init__(visible=False)  
 		self.rolled_number = rolled_number
 		self.end_coord_x = end_coord_x
 		self.end_coord_y = end_coord_y
@@ -77,16 +77,16 @@ class Dices(tu.Turtle):
 
 def generate_dice(end_coord_x, end_coord_y, dice_value):
 	object_list.append(Dices(1,end_coord_x,end_coord_y))
-	for i in range(540):
+	for i in range(round(abs(540-end_coord_y)/2)):
 		object_list[dice_value].draw_dice(-840, 540-2*i, 120, 90, 0)
 		tu.Screen().update()
 	for i,y,teta in tool.product(range(4),range(4),range(91)):
 		if -840+(4*i+y)*120 < end_coord_x:
-			object_list[dice_value].draw_dice(-840+(4*i+y)*120, -540, 120, 90-teta, y)
+			object_list[dice_value].draw_dice(-840+(4*i+y)*120, end_coord_y, 120, 90-teta, y)
 		tu.Screen().update() 
 
 for y,i in tool.product(range(9), range(16)):
-	generate_dice(960-120*i, y*120, 16*y+i)
+	generate_dice(960-120*i, y*120-540, 2*y+i)
 
 tu.Screen().update() 
 ti.sleep(5)
