@@ -35,24 +35,24 @@ class Dices(tu.Turtle):
 		self.seth(rotation+y*90+45)
 		self.forward(20*m.sqrt(2))
 
-	def Point_One_Three_Five(self, dice_corner_position_x,dice_corner_position_y,size, rotation,y):
+	def dot_one_three_five(self, dice_corner_position_x,dice_corner_position_y,size, rotation,y):
 		if self.rolled_number in [1,3,5]:
 			self.seth(rotation+45)
 			self.forward(60*m.sqrt(2))
 			self.draw_circle(self.xcor(), self.ycor(), 30)
 			
-	def Point_two(self, dice_corner_position_x,dice_corner_position_y,size, rotation,y):
+	def dot_two(self, dice_corner_position_x,dice_corner_position_y,size, rotation,y):
 		if self.rolled_number >= 2:
 			self.first_point(dice_corner_position_x, dice_corner_position_y, rotation, y)
 			self.seth(rotation+90*y)
 			self.forward(80)
 			self.draw_circle(self.xcor(), self.ycor(), 30)
 			self.first_point(dice_corner_position_x, dice_corner_position_y, rotation, y)
-			self.seth(rotation+90+90*y)
+			self.seth(rotation+90*(y+1))
 			self.forward(80)
 			self.draw_circle(self.xcor(), self.ycor(), 30)
 			
-	def Point_four(self, dice_corner_position_x,dice_corner_position_y,size, rotation,y):
+	def dot_four(self, dice_corner_position_x,dice_corner_position_y,size, rotation,y):
 		if self.rolled_number >= 4:
 			self.first_point(dice_corner_position_x, dice_corner_position_y, rotation, y)
 			self.draw_circle(self.xcor(), self.ycor(), 30)
@@ -61,7 +61,7 @@ class Dices(tu.Turtle):
 			self.forward(80*m.sqrt(2))
 			self.draw_circle(self.xcor(), self.ycor(), 30)
 			
-	def Point_six(self, dice_corner_position_x,dice_corner_position_y,size, rotation,y):
+	def dot_six(self, dice_corner_position_x,dice_corner_position_y,size, rotation,y):
 		if self.rolled_number >= 6:
 			self.first_point(dice_corner_position_x, dice_corner_position_y, rotation, y)
 			self.seth(rotation+90*y)
@@ -70,7 +70,7 @@ class Dices(tu.Turtle):
 			self.first_point(dice_corner_position_x, dice_corner_position_y, rotation, y)
 			self.seth(rotation+90*y)
 			self.forward(40)
-			self.seth(rotation+90+90*y)
+			self.seth(rotation+90*(y+1))
 			self.forward(80)
 			self.draw_circle(self.xcor(), self.ycor(), 30)
 			
@@ -84,15 +84,15 @@ class Dices(tu.Turtle):
 			self.seth(90*i+rotation)
 			self.forward(size)
 			self.up()
-		self.Point_One_Three_Five(dice_corner_position_x,dice_corner_position_y,size, rotation,y)
-		self.Point_two(dice_corner_position_x,dice_corner_position_y,size, rotation,y)
-		self.Point_four(dice_corner_position_x,dice_corner_position_y,size, rotation,y)
-		self.Point_six(dice_corner_position_x,dice_corner_position_y,size, rotation,y)
+		self.dot_one_three_five(dice_corner_position_x,dice_corner_position_y,size, rotation,y)
+		self.dot_two(dice_corner_position_x,dice_corner_position_y,size, rotation,y)
+		self.dot_four(dice_corner_position_x,dice_corner_position_y,size, rotation,y)
+		self.dot_six(dice_corner_position_x,dice_corner_position_y,size, rotation,y)
 		tu.Screen().update()
 
 def generate_dice(end_coord_x, end_coord_y, dice_value):
 	object_list.append(Dices(ra.randint(1,6),end_coord_x,end_coord_y))
-	for i in range(round(abs(540-end_coord_y)/2)):
+	for i in range(round(abs(540-end_coord_y)/2)+1):
 		object_list[dice_value].draw_dice(-840, 540-2*i, 120, 90, 0)
 		tu.Screen().update()
 	for i,y,teta in tool.product(range(4),range(4),range(91)):
